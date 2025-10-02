@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Language Analyzer : Marathi</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
     <style>
         * {
             margin: 0;
@@ -40,7 +41,7 @@
         }
 
         .sidebar-item.active {
-            background: #22c55e;
+            background: #aeb9bfff;
             color: #000;
         }
 
@@ -62,7 +63,7 @@
         }
 
         .user-bubble {
-            background: #22c55e;
+            background: #aab7bcff;
             color: #000;
             margin-left: auto;
         }
@@ -77,16 +78,13 @@
             transition: all 0.2s ease;
         }
 
-        .copy-btn:hover {
-            background: #22c55e;
-            color: #000;
-        }
+
 
         .input-box:focus {
             outline: none;
             ring: 2px;
-            ring-color: #22c55e;
-            box-shadow: 0 0 0 2px #22c55e;
+            ring-color: #72a9c5ff;
+            box-shadow: 0 0 0 2px #72a9c5ff;
         }
 
         .send-btn {
@@ -94,7 +92,7 @@
         }
 
         .send-btn:hover {
-            background: #16a34a;
+            background: #72a9c5ff;
             transform: scale(1.05);
         }
 
@@ -138,14 +136,21 @@
         <!-- Sidebar -->
         <div id="sidebar" class="sidebar expanded bg-[rgba(0,0,0,0.70)] flex flex-col transition-all duration-300">
             <!-- Logo -->
-            <div class="p-4 border-b border-gray-700 flex items-center justify-between">
+            <div class="p-4 flex items-center justify-between border-b border-gray-700 relative">
                 <div class="flex items-center space-x-2">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                    <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
+                        <!-- text lines -->
+                        <path d="M12 18h28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M12 30h22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M12 42h18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                        <!-- magnifier circle -->
+                        <circle cx="46" cy="30" r="9" stroke="currentColor" stroke-width="2.5" />
+                         <!-- handle -->
+                        <path d="M52.5 36.5 L59 43" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
                     </svg>
-                    <span id="logo-text" class="text-xl font-bold text-white">Analyzer</span>
+                    <span id="logo-text" class="text-xl font-bold text-white transition-opacity duration-300">Analyzer</span>
                 </div>
-                <button id="toggle-sidebar" class="text-gray-400 hover:text-white">
+                <button id="toggle-sidebar" class="text-gray-400 hover:text-white z-50">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -192,7 +197,7 @@
 
     <!-- Dropdown -->
     <div id="history-dropdown" class="absolute left-full top-0 ml-2 w-72 bg-[rgba(0,0,0,0.9)] rounded-lg shadow-lg hidden max-h-96 overflow-y-auto z-50">
-        <h3 class="text-white font-bold text-lg p-3 border-b border-gray-700">Recent Chats</h3>
+        <h3 class="text-white font-bold text-lg p-3 border-b border-gray-700">Previous Chats</h3>
         <div id="history-dropdown-list" class="p-2 space-y-2">
             <!-- JS will populate recent chats here -->
         </div>
@@ -246,13 +251,13 @@
             </div>
 
             <!-- Input Area -->
-            <div id="input-area" class="bg-[rgba(0,0,0,0.83)] border-t border-gray-700 p-4">
+            <div id="input-area" class="p-8">
                 <div class="max-w-4xl mx-auto flex items-center space-x-3">
                     <input
                         type="text"
                         id="text-input"
                         placeholder="Type your sentence here..."
-                        class="input-box flex-1 bg-neutral-900 text-white rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-white"
+                        class="input-box flex-1 bg-neutral-800 text-white rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-white"
                     />
                     <button id="send-btn" class="send-btn bg-white text-black rounded-full p-3 hover:bg-white transition-all">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

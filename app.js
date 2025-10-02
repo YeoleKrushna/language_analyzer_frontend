@@ -276,13 +276,20 @@ function toggleSidebar() {
     sidebar.classList.toggle('expanded');
 
     if (sidebar.classList.contains('collapsed')) {
-        sidebarTexts.forEach(t => t.classList.add('hidden'));
-        logoText.classList.add('hidden');
+        sidebarTexts.forEach(t => {
+            t.style.opacity = '0';
+            t.style.pointerEvents = 'none'; // prevent clicking hidden text
+        });
+        logoText.style.opacity = '0';
     } else {
-        sidebarTexts.forEach(t => t.classList.remove('hidden'));
-        logoText.classList.remove('hidden');
+        sidebarTexts.forEach(t => {
+            t.style.opacity = '1';
+            t.style.pointerEvents = 'auto';
+        });
+        logoText.style.opacity = '1';
     }
 }
+
 
 // ------------------------
 // History dropdown in sidebar
