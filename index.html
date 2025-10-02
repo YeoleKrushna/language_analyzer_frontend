@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Analyzer : Marathi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #121212;
+            color: #e4e4e7;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar.expanded {
+            width: 260px;
+        }
+
+        .sidebar-item {
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-item:hover {
+            background: #374151;
+        }
+
+        .sidebar-item.active {
+            background: #22c55e;
+            color: #000;
+        }
+
+        .chat-bubble {
+            animation: slideIn 0.3s ease;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-bubble {
+            background: #22c55e;
+            color: #000;
+            margin-left: auto;
+        }
+
+        .ai-bubble {
+            background: #2d2d2d;
+            color: #e4e4e7;
+            margin-right: auto;
+        }
+
+        .copy-btn {
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #22c55e;
+            color: #000;
+        }
+
+        .input-box:focus {
+            outline: none;
+            ring: 2px;
+            ring-color: #22c55e;
+            box-shadow: 0 0 0 2px #22c55e;
+        }
+
+        .send-btn {
+            transition: all 0.2s ease;
+        }
+
+        .send-btn:hover {
+            background: #16a34a;
+            transform: scale(1.05);
+        }
+
+        .welcome-screen {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .history-item {
+            transition: all 0.2s ease;
+        }
+
+        .history-item:hover {
+            background: #2d2d2d;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar expanded bg-[rgba(0,0,0,0.70)] flex flex-col transition-all duration-300">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-700 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                    </svg>
+                    <span id="logo-text" class="text-xl font-bold text-white">Analyzer</span>
+                </div>
+                <button id="toggle-sidebar" class="text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Menu Items -->
+            <nav class="flex-1 p-4 space-y-2">
+                <button id="new-chat-sidebar-btn" class="sidebar-item w-full flex items-center space-x-3 p-3 rounded-lg text-left">
+                    <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                     </svg>
+                 <span class="sidebar-text">New Chat</span>
+                </button>
+
+                <button id="chats-btn" class="sidebar-item w-full flex items-center space-x-3 p-3 rounded-lg text-left">
+                    <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                    <span class="sidebar-text">Chats</span>
+                </button>
+
+                <button id="profile-btn" class="sidebar-item w-full flex items-center space-x-3 p-3 rounded-lg text-left">
+                    <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    <span class="sidebar-text">Profile</span>
+                </button>
+
+                <button id="logout-btn" class="sidebar-item w-full flex items-center space-x-3 p-3 rounded-lg text-left">
+                    <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    <span class="sidebar-text">Logout</span>
+                </button>
+                <!-- Add inside <nav> in sidebar -->
+<div class="relative">
+    <button id="history-btn" class="sidebar-item w-full flex items-center space-x-3 p-3 rounded-lg text-left">
+        <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v6h6M21 21v-6h-6M3 21l6-6m12-6l-6 6"/>
+        </svg>
+        <span class="sidebar-text">History</span>
+    </button>
+
+    <!-- Dropdown -->
+    <div id="history-dropdown" class="absolute left-full top-0 ml-2 w-72 bg-[rgba(0,0,0,0.9)] rounded-lg shadow-lg hidden max-h-96 overflow-y-auto z-50">
+        <h3 class="text-white font-bold text-lg p-3 border-b border-gray-700">Recent Chats</h3>
+        <div id="history-dropdown-list" class="p-2 space-y-2">
+            <!-- JS will populate recent chats here -->
+        </div>
+    </div>
+</div>
+
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <div class="bg-[rgba(0,0,0,0.83)] border-b border-gray-700 p-4">
+                <h1 class="text-2xl font-bold text-white">Language Analyzer : Marathi</h1>
+            </div>
+
+            <!-- Chat Area -->
+            <div id="chat-area" class="flex-1 overflow-y-auto p-6 scrollbar-custom">
+                <!-- Welcome Screen -->
+                <div id="welcome-screen" class="welcome-screen flex flex-col items-center justify-center h-full space-y-4">
+                    <svg class="w-24 h-24 text-white" fill="none" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 18h28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M12 30h22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M12 42h18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                        <!-- magnifier circle -->
+                        <circle cx="46" cy="30" r="9" stroke="currentColor" stroke-width="2.5" />
+                        <!-- handle -->
+                        <path d="M52.5 36.5 L59 43" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+                    <h2 class="text-3xl font-bold">Welcome to Language Analyzer : Marathi</h2>
+                    <p class="text-gray-400 text-center max-w-md">Start correcting your grammar by typing a message below. Get instant correction powered by AI.</p>
+                </div>
+
+                <!-- Chat Messages -->
+                <div id="chat-messages" class="hidden space-y-4 max-w-4xl mx-auto">
+                </div>
+
+                <!-- History View -->
+                <div id="history-view" class="hidden max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6">Chat History</h2>
+                    <div id="history-list" class="space-y-4">
+                    </div>
+                </div>
+
+                <!-- Profile View -->
+                <div id="profile-view" class="hidden max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6">Profile</h2>
+                    <div id="profile-content" class="bg-[rgba(0,0,0,0.83)] rounded-lg p-6 space-y-4">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div id="input-area" class="bg-[rgba(0,0,0,0.83)] border-t border-gray-700 p-4">
+                <div class="max-w-4xl mx-auto flex items-center space-x-3">
+                    <input
+                        type="text"
+                        id="text-input"
+                        placeholder="Type your sentence here..."
+                        class="input-box flex-1 bg-neutral-900 text-white rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-white"
+                    />
+                    <button id="send-btn" class="send-btn bg-white text-black rounded-full p-3 hover:bg-white transition-all">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
