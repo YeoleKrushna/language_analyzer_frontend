@@ -1,97 +1,91 @@
-/* ------------------------------
-   Sidebar Base Styles
------------------------------- */
-.sidebar {
-    width: 260px; /* expanded width */
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    flex-direction: column;
-    transition: width 0.3s ease;
-    position: relative;
+/* ------------------------
+   Mobile Responsiveness
+------------------------ */
+
+/* Small devices (default mobile) */
+.login-container {
+    width: 90%;        /* takes 90% of screen width */
+    max-width: 400px;  /* caps maximum width */
+    margin: 0 auto;    /* centers horizontally */
+    padding: 2rem;     /* spacing inside container */
 }
 
-.sidebar.collapsed {
-    width: 60px; /* collapsed width */
+/* Tablets and up */
+@media (min-width: 640px) {
+    .login-container {
+        width: 80%;        /* slightly narrower relative to screen */
+        max-width: 450px;  /* larger max-width for tablets */
+        padding: 2.2rem;
+    }
 }
 
-/* ------------------------------
-   Logo
------------------------------- */
-.sidebar .logo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    border-bottom: 1px solid #374151;
+/* Laptops */
+@media (min-width: 1024px) {
+    .login-container {
+        width: 60%;        /* container smaller relative to screen */
+        max-width: 480px;  /* cap maximum width */
+        padding: 2.5rem;
+    }
 }
 
-#logo-text {
-    transition: opacity 0.3s ease, width 0.3s ease;
-    white-space: nowrap;
+/* Desktops */
+@media (min-width: 1440px) {
+    .login-container {
+        width: 50%;
+        max-width: 500px;
+        padding: 2.5rem;
+    }
 }
 
-.sidebar.collapsed #logo-text {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
+
+
+/* ------------------------
+   Mobile Responsiveness
+------------------------ */
+.signup-container {
+    width: 90%;        /* takes 90% of screen width */
+    max-width: 400px;  /* caps maximum width */
+    margin: 0 auto;    /* centers horizontally */
+    padding: 2rem;     /* spacing inside container */
+}
+/* Small devices (default mobile) */
+
+/* Tablets and up */
+@media (min-width: 640px) {
+    .signup-container {
+        width: 80%;        /* slightly narrower */
+        max-width: 450px;
+        padding: 2.2rem;
+    }
 }
 
-/* ------------------------------
-   Menu Items
------------------------------- */
-.sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    color: #e4e4e7;
-    cursor: pointer;
-    transition: all 0.2s ease;
+/* Laptops */
+@media (min-width: 1024px) {
+    .signup-container {
+        width: 60%;        /* container smaller relative to screen */
+        max-width: 480px;
+        padding: 2.5rem;
+    }
 }
 
-.sidebar-item:hover {
-    background: #374151;
+/* Desktops */
+@media (min-width: 1440px) {
+    .signup-container {
+        width: 50%;
+        max-width: 500px;
+        padding: 2.5rem;
+    }
 }
 
-.sidebar-item.active {
-    background: #aeb9bf;
-    color: #000;
-}
+/* Optional: make inputs and button scale nicely on larger screens */
+@media (min-width: 768px) {
+    .input-field {
+        padding: 1rem 1.25rem;
+        font-size: 1.05rem;
+    }
 
-/* Hide text when sidebar collapsed */
-.sidebar.collapsed .sidebar-text {
-    display: none;
-}
-
-/* Center icons vertically when text hidden */
-.sidebar.collapsed .sidebar-item svg {
-    margin: 0 auto;
-}
-
-/* ------------------------------
-   Dropdowns (History)
------------------------------- */
-#history-dropdown {
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-/* ------------------------------
-   Scrollbar for sidebar if needed
------------------------------- */
-.sidebar::-webkit-scrollbar {
-    width: 8px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-    background: #1e1e1e;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background: #374151;
-    border-radius: 4px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-    background: #4b5563;
+    .submit-btn {
+        padding: 1rem 1.25rem;
+        font-size: 1.1rem;
+    }
 }
