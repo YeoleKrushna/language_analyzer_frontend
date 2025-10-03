@@ -29,7 +29,7 @@ function escapeHtml(text) {
 function copyText(text) {
     navigator.clipboard.writeText(text).then(() => {
         const notification = document.createElement('div');
-        notification.className = 'fixed bottom-4 right-4 bg-green-500 text-black px-6 py-3 rounded-lg shadow-lg';
+        notification.className = 'fixed bottom-4 right-4 bg-gray-200 text-black px-6 py-3 rounded-lg shadow-lg';
         notification.textContent = 'Copied to clipboard!';
         document.body.appendChild(notification);
         setTimeout(() => notification.remove(), 2000);
@@ -55,7 +55,7 @@ function addChatMessage(text, isUser = false) {
         messageDiv.innerHTML = `
             <div class="flex justify-between items-start space-x-4">
                 <p class="flex-1">${escapeHtml(text)}</p>
-                <button class="copy-btn flex-shrink-0 bg-gray-700 hover:bg-green-500 text-white px-3 py-1 rounded-lg text-sm" onclick="copyText('${escapeHtml(text).replace(/'/g, "\\'")}')">
+                <button class="copy-btn flex-shrink-0 bg-gray-700 text-white px-3 py-1 rounded-lg text-sm" onclick="copyText('${escapeHtml(text).replace(/'/g, "\\'")}')">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
@@ -65,7 +65,8 @@ function addChatMessage(text, isUser = false) {
     }
 
     chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    scrollChatToBottom();
+
 }
 
 async function sendMessage() {
@@ -113,58 +114,9 @@ async function sendMessage() {
 // Load History
 // ------------------------
 async function loadHistory() {
-    const token = checkAuth();
-    if (!token) return;
-
-    const historyList = document.getElementById("history-list");
-    try {
-        const response = await fetch(`${API_BASE_URL}/auth/history`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.status === 401) {
-            localStorage.removeItem('jwt_token');
-            window.location.href = 'login.html';
-            return;
-        }
-
-        if (!response.ok) throw new Error('Failed to load history');
-
-        const data = await response.json();
-        historyList.innerHTML = "";
-
-        if (!data || data.length === 0) {
-            historyList.innerHTML = '<p class="text-gray-400 text-center">No history yet</p>';
-            return;
-        }
-
-        data.forEach(item => {
-            const historyItem = document.createElement('div');
-            historyItem.className = 'history-item bg-gray-900 rounded-lg p-4 space-y-3';
-            historyItem.innerHTML = `
-                <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <p class="text-sm text-gray-400 mb-2">${item.timestamp ? new Date(item.timestamp).toLocaleString() : 'Recent'}</p>
-                        <p class="font-medium text-green-500 mb-2">Input:</p>
-                        <p class="text-gray-300 mb-3">${escapeHtml(item.input_text || '')}</p>
-                        <p class="font-medium text-green-500 mb-2">Analysis:</p>
-                        <p class="text-gray-300">${escapeHtml(item.corrected_text || '')}</p>
-                    </div>
-                    <button class="copy-btn flex-shrink-0 bg-gray-700 hover:bg-green-500 text-white px-3 py-2 rounded-lg text-sm ml-4" onclick="copyText('${escapeHtml(item.corrected_text || '').replace(/'/g, "\\'")}')">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                        </svg>
-                    </button>
-                </div>
-            `;
-            historyList.appendChild(historyItem);
-        });
-
-    } catch (error) {
-        console.error('Error:', error);
-        showError('Failed to load history');
-    }
+    // left panel removed, do nothing
 }
+
 
 // ------------------------
 // Load Profile
@@ -191,7 +143,7 @@ async function loadProfile() {
 
         profileContent.innerHTML = `
             <div class="flex items-center space-x-4 mb-6">
-                <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-3xl font-bold text-black">
+                <div class="w-20 h-20 bg-gray-500 rounded-full flex items-center justify-center text-3xl font-bold text-black">
                     ${(data.name || 'U').charAt(0).toUpperCase()}
                 </div>
                 <div>
@@ -275,20 +227,15 @@ function toggleSidebar() {
     sidebar.classList.toggle('collapsed');
     sidebar.classList.toggle('expanded');
 
-    if (sidebar.classList.contains('collapsed')) {
-        sidebarTexts.forEach(t => {
-            t.style.opacity = '0';
-            t.style.pointerEvents = 'none'; // prevent clicking hidden text
-        });
-        logoText.style.opacity = '0';
-    } else {
-        sidebarTexts.forEach(t => {
-            t.style.opacity = '1';
-            t.style.pointerEvents = 'auto';
-        });
-        logoText.style.opacity = '1';
-    }
+  if (sidebar.classList.contains('collapsed')) {
+    sidebarTexts.forEach(t => t.style.display = 'none');
+} else {
+    sidebarTexts.forEach(t => t.style.display = 'inline');
 }
+
+}
+
+
 
 
 // ------------------------
@@ -299,9 +246,10 @@ async function loadHistoryDropdown() {
     if (!token) return;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/history`, {
+        const response = await fetch(`${API_BASE_URL}/history`, {  // corrected endpoint
             headers: { 'Authorization': `Bearer ${token}` }
         });
+
         if (!response.ok) throw new Error("Failed to load history");
 
         const data = await response.json();
@@ -315,12 +263,42 @@ async function loadHistoryDropdown() {
 
         data.forEach(item => {
             const div = document.createElement("div");
-            div.className = "p-2 rounded hover:bg-gray-800 cursor-pointer";
-            div.textContent = item.input_text || "No input";
-            div.addEventListener("click", () => {
+            div.className = "flex justify-between items-center p-2 rounded hover:bg-gray-800 cursor-pointer";
+
+            const textSpan = document.createElement("span");
+            textSpan.textContent = item.input_text || "No input";
+            textSpan.className = "flex-1";
+            textSpan.addEventListener("click", () => {
                 showChatFromHistory(item);
                 document.getElementById("history-dropdown").classList.add("hidden");
             });
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "🗑";
+            deleteBtn.className = "ml-2 text-gray hover:text-white";
+            deleteBtn.addEventListener("click", async (e) => {
+                e.stopPropagation(); // prevent triggering showChat
+                if (!confirm("Are you sure you want to delete this history item?")) return;
+
+                try {
+                    const delRes = await fetch(`${API_BASE_URL}/history/${item.id}`, {
+                        method: "DELETE",
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (delRes.status === 204) {
+                        div.remove(); // remove from dropdown
+                    } else {
+                        const errData = await delRes.json();
+                        throw new Error(errData.detail || "Failed to delete history");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showError("Failed to delete history");
+                }
+            });
+
+            div.appendChild(textSpan);
+            div.appendChild(deleteBtn);
             historyDropdownList.appendChild(div);
         });
 
@@ -344,6 +322,9 @@ function showChatFromHistory(item) {
     aiBubble.className = "ai-bubble chat-bubble p-3 rounded-lg max-w-xl";
     aiBubble.textContent = item.corrected_text;
     chatMessages.appendChild(aiBubble);
+
+    scrollChatToBottom();
+ // scroll to bottom
 }
 
 // ------------------------
@@ -356,12 +337,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('text-input').addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
 
     document.getElementById('chats-btn').addEventListener('click', () => switchView('chat'));
-    document.getElementById('history-btn').addEventListener('click', async e => {
-        e.stopPropagation();
-        const dropdown = document.getElementById("history-dropdown");
-        dropdown.classList.toggle("hidden");
-        if (!dropdown.classList.contains("hidden")) await loadHistoryDropdown();
-    });
+document.getElementById('history-btn').addEventListener('click', async e => {
+    e.stopPropagation();
+    switchView('history');
+    const dropdown = document.getElementById("history-dropdown");
+    dropdown.classList.toggle("hidden");
+    if (!dropdown.classList.contains("hidden")) await loadHistoryDropdown();
+});
+
+
     document.getElementById('profile-btn').addEventListener('click', () => switchView('profile'));
     document.getElementById('logout-btn').addEventListener('click', logout);
     document.getElementById('toggle-sidebar').addEventListener('click', toggleSidebar);
@@ -393,3 +377,43 @@ function newChatSidebar() {
     // Switch to chat view
     switchView('chat');
 }
+
+
+function scrollChatToBottom() {
+    const chatMessages = document.getElementById("chat-messages");
+    if (!chatMessages) return;
+    // Use requestAnimationFrame for smoother scroll after DOM updates
+    requestAnimationFrame(() => {
+        chatMessages.scrollTo({
+            top: chatMessages.scrollHeight,
+            behavior: "smooth" // or "auto" if you want instant scroll
+        });
+    });
+}
+
+
+const mobileBtn = document.getElementById("mobile-menu-btn");
+const mobileOverlay = document.getElementById("mobile-overlay");
+
+// Open sidebar
+mobileBtn.addEventListener("click", () => {
+    sidebar.classList.add("mobile-open");
+    mobileOverlay.classList.add("active");
+});
+
+// Close sidebar when overlay clicked
+mobileOverlay.addEventListener("click", () => {
+    sidebar.classList.remove("mobile-open");
+    mobileOverlay.classList.remove("active");
+});
+
+// Optional: close sidebar on mobile when a sidebar item is clicked
+document.querySelectorAll(".sidebar-item").forEach(item => {
+    item.addEventListener("click", () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove("mobile-open");
+            mobileOverlay.classList.remove("active");
+        }
+    });
+});
+

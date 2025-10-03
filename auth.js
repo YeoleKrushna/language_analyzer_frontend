@@ -120,3 +120,55 @@ document.addEventListener('DOMContentLoaded', () => {
         signupForm.addEventListener('submit', handleSignup);
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+// Send OTP
+document.getElementById('send-otp-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    if (!email) return alert('Enter email');
+
+    const res = await fetch(`${API_BASE_URL}/auth/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    alert(data.message);
+
+    // Show OTP input step
+    document.getElementById('email-step').classList.add('hidden');
+    document.getElementById('otp-step').classList.remove('hidden');
+});
+
+// Verify OTP
+document.getElementById('verify-otp-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const otp = document.getElementById('otp').value;
+
+    const res = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp })
+    });
+
+    if (!res.ok) {
+        const data = await res.json();
+        alert(data.detail || 'OTP invalid');
+        return;
+    }
+
+    alert('OTP verified! Now you can fill name & password and Sign Up.');
+    document.getElementById('otp-step').classList.add('hidden');
+    document.getElementById('signup-form').classList.remove('hidden');
+});
+

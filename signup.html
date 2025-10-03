@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+   <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Language Analyzer</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -67,10 +68,17 @@
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
-    <div class="signup-container bg-black-neutral hover:bg-black transition-all rounded-2xl shadow-2xl shadow-black/80 border border-white">
+
+        <div class="signup-container bg-black-neutral hover:bg-black transition-all rounded-xl shadow-xl border border-white
+            w-11/12 max-w-sm sm:w-4/5 sm:max-w-md md:w-3/5 md:max-w-lg lg:w-1/2 lg:max-w-md p-4 sm:p-5 md:p-6">
+
+
+
+
+
         <!-- Logo -->
-        <div class="flex justify-center mb-6">
-  <svg class="w-24 h-24 text-white" fill="none" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
+        <div class="flex justify-center mt-8 mb-4">
+  <svg class="w-20 h-20 text-white" fill="none" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
     <!-- text lines -->
     <path d="M12 18h28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
     <path d="M12 30h22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
@@ -83,7 +91,7 @@
 </div>
 
 
-        <h1 class="text-3xl font-bold text-center mb-2 text-white">Create Account</h1>
+        <h1 class="text-2xl font-bold text-center mb-2 text-white">Create Account</h1>
         <p class="text-center text-gray-400 mb-8">Sign up for Language Analyzer</p>
 
         <!-- Error Message -->
@@ -91,52 +99,56 @@
         </div>
 
         <!-- Signup Form -->
-        <form id="signup-form" class="space-y-6">
-            <div>
-                <label for="name" class="block text-sm font-medium mb-2">Name</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    class="input-field w-full bg-gray-200 text-black rounded-lg px-4 py-3 focus:outline-none"
-                    placeholder="Your name"
-                />
-            </div>
+<!-- Signup Form -->
+<form id="signup-form" class="space-y-3 flex flex-col items-center">
+    <!-- Email Step -->
+    <div id="email-step" class="w-full flex flex-col items-center">
+        <label for="email" class="block text-sm font-medium mb-1 text-center">Email</label>
+        <input type="email" id="email" name="email" required
+               class="input-field w-3/4 max-w-xs bg-gray-200 text-black rounded-lg px-3 py-1.5 focus:outline-none"
+               placeholder="your@email.com"/>
+        <button type="button" id="send-otp-btn"
+                class="w-3/4 max-w-[200px] bg-gray-800 text-white font-semibold rounded-lg px-6 py-2 mt-2">
+            Send OTP
+        </button>
+    </div>
 
-            <div>
-                <label for="email" class="block text-sm font-medium mb-2">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    class="input-field w-full bg-gray-200 text-black rounded-lg px-4 py-3 focus:outline-none"
-                    placeholder="your@email.com"
-                />
-            </div>
+    <!-- OTP Step -->
+    <div id="otp-step" class="hidden w-full flex flex-col items-center">
+        <label for="otp" class="block text-sm font-medium mb-1 text-center">Enter OTP</label>
+        <input type="text" id="otp" name="otp" required
+               class="input-field w-3/4 max-w-xs bg-gray-200 text-black rounded-lg px-3 py-1.5 focus:outline-none"
+               placeholder="6-digit OTP"/>
+        <button type="button" id="verify-otp-btn"
+                class="w-3/4 max-w-[200px] bg-gray-800 text-white font-semibold rounded-lg px-6 py-2 mt-2">
+            Verify OTP
+        </button>
+    </div>
 
-            <div>
-                <label for="password" class="block text-sm font-medium mb-2">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    required
-                    minlength="6"
-                    class="input-field w-full bg-gray-200 text-black rounded-lg px-4 py-3 focus:outline-none"
-                    placeholder="Create a password"
-                />
-            </div>
+    <!-- Name -->
+    <div class="w-full flex flex-col items-center">
+        <label for="name" class="block text-sm font-medium mb-1 ">Name</label>
+        <input type="text" id="name" name="name" required
+               class="input-field w-3/4 max-w-xs bg-gray-200 text-black rounded-lg px-3 py-1.5 focus:outline-none"
+               placeholder="Your name"/>
+    </div>
 
-            <button
-                type="submit"
-                id="submit-btn"
-                class="submitt-btn w-full bg-gray-800 text-white font-semibold rounded-lg px-6 py-3"
-            >
-                Sign Up
-            </button>
-        </form>
+    <!-- Password -->
+    <div class="w-full flex flex-col items-center">
+        <label for="password" class="block text-sm font-medium mb-1">Password</label>
+        <input type="password" id="password" name="password" required minlength="6"
+               class="input-field w-3/4 max-w-xs bg-gray-200 text-black rounded-lg px-3 py-1.5 focus:outline-none"
+               placeholder="Create a password"/>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit"
+            id="submit-btn"
+            class="w-3/4 bg-gray-800 text-white font-semibold rounded-lg px-6 py-2 mt-2">
+        Sign Up
+    </button>
+</form>
+
 
         <!-- Login Link -->
         <p class="text-center mt-6 text-gray-400">

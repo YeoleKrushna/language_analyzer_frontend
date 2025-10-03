@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Language Analyzer : Marathi</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,7 +18,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #121212;
             color: #e4e4e7;
-            overflow: hidden;
+            overflow-x: hidden; 
         }
 
         .sidebar {
@@ -78,8 +79,6 @@
             transition: all 0.2s ease;
         }
 
-
-
         .input-box:focus {
             outline: none;
             ring: 2px;
@@ -129,15 +128,282 @@
         .scrollbar-custom::-webkit-scrollbar-thumb:hover {
             background: #4b5563;
         }
-    </style>
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    body {
+        overflow-y: auto; /* allow scrolling */
+    }
+
+    /* Sidebar mobile adjustments */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease, width 0.3s ease;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+        width: 280px;
+    }
+
+    .sidebar.collapsed {
+        width: 0;
+        transform: translateX(-100%);
+    }
+
+    /* Mobile overlay */
+    .mobile-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 90;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Header adjustments */
+    .main-header {
+        padding: 12px 16px;
+    }
+
+    .main-header h1 {
+        font-size: 18px;
+    }
+
+    /* Mobile menu button */
+    .mobile-menu-btn {
+        display: block;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 110;
+        background: #374151;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .mobile-menu-btn:hover {
+        background: #4b5563;
+    }
+
+    .mobile-menu-btn.sidebar-open {
+        left: 290px;
+    }
+
+    /* Chat area mobile adjustments */
+    #chat-area {
+        padding: 16px;
+        padding-top: 60px;
+        height: calc(100vh - 140px);
+    }
+
+    .welcome-screen h2 {
+        font-size: 24px;
+        padding: 0 20px;
+        text-align: center;
+    }
+
+    .welcome-screen p {
+        font-size: 14px;
+        padding: 0 20px;
+    }
+
+    .welcome-screen svg {
+        width: 64px;
+        height: 64px;
+    }
+
+    /* Chat bubbles mobile */
+    .chat-bubble {
+        max-width: 85%; /* restrict width */
+        font-size: 14px;
+        padding: 12px;
+        word-wrap: break-word;
+    }
+
+    .user-bubble {
+        margin-left: auto;
+        margin-right: 0;
+        align-self: flex-end; /* ensure right alignment */
+    }
+
+    .ai-bubble {
+        margin-right: auto;
+        margin-left: 0;
+        align-self: flex-start; /* ensure left alignment */
+    }
+
+    /* Input area mobile */
+    #input-area {
+        padding: 16px;
+        background: #121212;
+        border-top: 1px solid #374151;
+    }
+
+    .input-box {
+        font-size: 14px;
+        padding: 12px 16px;
+    }
+
+    .send-btn {
+        padding: 10px;
+    }
+
+    .send-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* History dropdown mobile */
+    #history-dropdown {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        margin-left: 0;
+        width: 90%;
+        max-width: 320px;
+        max-height: 70vh;
+    }
+
+    /* Profile and history views */
+    #profile-view,
+    #history-view {
+        padding: 16px;
+    }
+
+    #profile-view h2,
+    #history-view h2 {
+        font-size: 20px;
+    }
+
+    /* Sidebar content mobile */
+    .sidebar-item span {
+        font-size: 14px;
+    }
+
+    .sidebar-item svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    #logo-text {
+        font-size: 18px;
+    }
+
+    /* Chat messages container */
+    #chat-messages {
+        padding-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
+    /* History list mobile */
+    .history-item {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /* Profile content mobile */
+    #profile-content {
+        padding: 16px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .main-header h1 {
+        font-size: 16px;
+    }
+
+    .welcome-screen h2 {
+        font-size: 20px;
+    }
+
+    .welcome-screen p {
+        font-size: 13px;
+    }
+
+    .chat-bubble {
+        font-size: 13px;
+        padding: 10px;
+        max-width: 90%;
+    }
+
+    .input-box {
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+
+    .send-btn {
+        padding: 8px;
+    }
+
+    .sidebar.mobile-open {
+        width: 260px;
+    }
+
+    .mobile-menu-btn.sidebar-open {
+        left: 270px;
+    }
+}
+
+/* Tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar.expanded {
+        width: 220px;
+    }
+
+    #chat-area {
+        padding: 24px;
+    }
+
+    .chat-bubble {
+        max-width: 75%;
+    }
+}
+
+/* Hide mobile menu button on desktop */
+@media (min-width: 769px) {
+    .mobile-menu-btn {
+        display: none;
+    }
+}
+</style>
 </head>
 <body>
     <div class="flex h-screen">
+        <!-- Add inside <body> but outside sidebar -->
+<div id="mobile-menu-btn" class="mobile-menu-btn">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+</div>
+<div id="mobile-overlay" class="mobile-overlay"></div>
+
         <!-- Sidebar -->
         <div id="sidebar" class="sidebar expanded bg-[rgba(0,0,0,0.70)] flex flex-col transition-all duration-300">
             <!-- Logo -->
             <div class="p-4 flex items-center justify-between border-b border-gray-700 relative">
                 <div class="flex items-center space-x-2">
+                     <button id="toggle-sidebar" class="flex items-center space-x-2 focus:outline-none">
                     <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
                         <!-- text lines -->
                         <path d="M12 18h28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
@@ -148,13 +414,8 @@
                          <!-- handle -->
                         <path d="M52.5 36.5 L59 43" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
                     </svg>
-                    <span id="logo-text" class="text-xl font-bold text-white transition-opacity duration-300">Analyzer</span>
+                    </button>
                 </div>
-                <button id="toggle-sidebar" class="text-gray-400 hover:text-white z-50">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
             </div>
 
             <!-- Menu Items -->
@@ -187,16 +448,19 @@
                     <span class="sidebar-text">Logout</span>
                 </button>
                 <!-- Add inside <nav> in sidebar -->
+
 <div class="relative">
+    <!-- History Button -->
     <button id="history-btn" class="sidebar-item w-full flex items-center space-x-3 p-3 rounded-lg text-left">
         <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v6h6M21 21v-6h-6M3 21l6-6m12-6l-6 6"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M3 3v6h6M21 21v-6h-6M3 21l6-6m12-6l-6 6"/>
         </svg>
         <span class="sidebar-text">History</span>
     </button>
 
-    <!-- Dropdown -->
-    <div id="history-dropdown" class="absolute left-full top-0 ml-2 w-72 bg-[rgba(0,0,0,0.9)] rounded-lg shadow-lg hidden max-h-96 overflow-y-auto z-50">
+    <!-- Collapsible Dropdown inside Sidebar -->
+    <div id="history-dropdown" class="hidden bg-[rgba(0,0,0,0.8)] rounded-lg mt-2 max-h-96 overflow-y-auto z-50">
         <h3 class="text-white font-bold text-lg p-3 border-b border-gray-700">Previous Chats</h3>
         <div id="history-dropdown-list" class="p-2 space-y-2">
             <!-- JS will populate recent chats here -->
@@ -204,15 +468,16 @@
     </div>
 </div>
 
+
             </nav>
         </div>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
             <!-- Header -->
-            <div class="bg-[rgba(0,0,0,0.83)] border-b border-gray-700 p-4">
-                <h1 class="text-2xl font-bold text-white">Language Analyzer : Marathi</h1>
-            </div>
+<div class="bg-[rgba(0,0,0,0.83)] border-b border-gray-700 p-4 main-header">
+    <h1 class="text-2xl font-bold text-white">Language Analyzer : Marathi</h1>
+</div>
 
             <!-- Chat Area -->
             <div id="chat-area" class="flex-1 overflow-y-auto p-6 scrollbar-custom">
@@ -237,7 +502,7 @@
 
                 <!-- History View -->
                 <div id="history-view" class="hidden max-w-4xl mx-auto">
-                    <h2 class="text-2xl font-bold mb-6">Chat History</h2>
+                    
                     <div id="history-list" class="space-y-4">
                     </div>
                 </div>
@@ -256,7 +521,7 @@
                     <input
                         type="text"
                         id="text-input"
-                        placeholder="Type your sentence here..."
+                        placeholder="Type your incorrect Marathi sentence here..."
                         class="input-box flex-1 bg-neutral-800 text-white rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-white"
                     />
                     <button id="send-btn" class="send-btn bg-white text-black rounded-full p-3 hover:bg-white transition-all">
@@ -272,3 +537,4 @@
     <script src="app.js"></script>
 </body>
 </html>
+
